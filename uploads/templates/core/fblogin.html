@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>AWS Cognito + Facebook Login JavaScript Example</title>
+    <meta charset="UTF-8">
+  </head>
+<body>
+  <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1.41.min.js"></script>
+  <script>
+  
+    AWS.config.region = 'us-east-1';
+  
+    (function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src = "//connect.facebook.net/en_US/sdk.js";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+
+    window.fbAsyncInit = function() {
+      FB.init({
+        appId      : '515756545489493',
+        cookie     : true, 
+                           
+        xfbml      : true, 
+        version    : 'v2.11'
+      });
+      FB.getLoginStatus(statusChangeCallback);
+    };
+
+
+    function statusChangeCallback(response) {
+      console.log('statusChangeCallback', response);
+
+      if (response.status === 'connected' && response.authResponse) { 
+
+        testAPI();
+
+        AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+          IdentityPoolId: 'us-east-1_NDph2pxTK',
+          Logins: { 'graph.facebook.com': response.authResponse.accessToken }
+        });
+
+        AWS.config.credentials.get(function(err) {
+          if (err) return console.log("Error", err);
+          console.log("Cognito Identity Id", AWS.config.credentials.identityId);
+        });
+
+      } else if (response.status === 'not_authorized') {
+        document.getElementById('status').innerHTML = 'Please log into this app.';
+      } else {
+        document.getElementById('status').innerHTML = 'Please log into Facebook.';
+      }
+    }
+
+
+    function testAPI() {
+      console.log('Welcome!  Fetching your information.... ');
+      FB.api('/me', function(response) {
+        console.log('Successful login for: ' + response.name);
+        document.getElementById('status').innerHTML = 'Thanks for logging in, ' + response.name + '!';
+      });
+    }
+
+
+  </script>
+
+
+  <fb:login-button scope="public_profile,email" onlogin="FB.getLoginStatus(statusChangeCallback);"></fb:login-button>
+
+  <div id="status"></div>
+
+</body>
+</html>

@@ -1,0 +1,29 @@
+
+{% extends 'core/index.html' %}
+
+{% block content %}
+<p>Hey, welcome to my website! I am a programmer!</p>
+
+
+{% endblock %}
+
+
+<!-- 
+  <ul>
+    <li>
+      <a href="{% url 'simple_upload' %}">Simple Upload</a>
+    </li>
+    <li>
+      <a href="{% url 'model_form_upload' %}">Model Form Upload</a>
+    </li>
+  </ul>
+
+  <p>Uploaded files:</p>
+  <ul>
+    {% for obj in documents %}
+      <li>
+        <a href="{{ obj.document.url }}">{{ obj.document.name }}</a>
+        <small>(Uploaded at: {{ obj.uploaded_at }})</small>
+      </li>
+    {% endfor %}
+  </ul> -->

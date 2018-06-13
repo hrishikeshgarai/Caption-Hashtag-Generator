@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  	<meta charset="UTF-8">
+  	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Facebook Login JavaScript</title>
+    <link rel="stylesheet" type="text/css" href="">
+  </head>
+<body>
+	<script>
+		//initialize facebook sdk
+		  window.fbAsyncInit = function() {
+		    FB.init({
+		      appId            : '515756545489493',
+		      autoLogAppEvents : true,
+		      xfbml            : true,
+		      version          : 'v2.11'
+		    });
+
+		    FB.getLoginStatus(function(response){
+		    	if(response.status === "connected"){
+		    		document.getElementById('status').innerHTML = 'connected.';
+		    		document.getElementById('login').style.visibility='hidden';
+		    	}else if(response.status === "not_authorized"){
+		    		document.getElementById('status').innerHTML = 'not logged in.';
+		    	} 
+		    	else{
+		    		document.getElementById('status').innerHTML = 'not logged in.';
+		    	}
+		    });
+		  };
+
+		  (function(d, s, id){
+		    var js, fjs = d.getElementsByTagName(s)[0];
+		    if (d.getElementById(id)) {return;}
+		    js = d.createElement(s); js.id = id;
+		    js.src = "https://connect.facebook.net/en_US/sdk.js";
+		    fjs.parentNode.insertBefore(js, fjs);
+		   }(document, 'script', 'facebook-jssdk'));
+
+		  function login(){
+		  	FB.login(function(response){
+		  		if(response.status === "connected"){
+		    		document.getElementById('status').innerHTML = 'connected.';
+		    		document.getElementById('login').style.visibility='hidden';
+		    	}else if(response.status === "not_authorized"){
+		    		document.getElementById('status').innerHTML = 'not logged in.';
+		    	} 
+		    	else{
+		    		document.getElementById('status').innerHTML = 'not logged in.';
+		  		}
+		  	},{scope:'email'});
+			}
+
+			function getinfo(){
+				FB.api('/me','GET',{fields:'first_name,last_name,name,id'}, function(response){
+					document.getElementById('status').innerHTML = response.id;
+				});
+			}
+</script>
+
+<div id="status"></div>
+<button onclick="getinfo()">Get_info</button>
+<button onclick="login()" id="login">Login</button>
+</body>
+</html>
