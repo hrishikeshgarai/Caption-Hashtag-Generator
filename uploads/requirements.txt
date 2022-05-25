@@ -17,7 +17,7 @@ idna==2.6
 jmespath==0.9.3
 oauthlib==2.0.6
 pyasn1==0.4.2
-PyJWT==1.5.3
+PyJWT==2.4.0
 python-dateutil==2.6.1
 python-openid==2.2.5
 python-social-auth==0.3.6
